@@ -5,7 +5,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "nodemon index.js"
+    "start": "nodemon index.js",
+    "task1": "nodemon ./eventEmitter/task1.js",
+    "task2": "nodemon ./eventEmitter/task2.js",
+    "task3": "nodemon ./eventEmitter/task3.js"
   },
   "repository": {
     "type": "git",
@@ -19,5 +22,8 @@
   "homepage": "https://github.com/samu975/node-course#readme",
   "devDependencies": {
     "nodemon": "^3.0.1"
+  },
+  "dependencies": {
+    "csvtojson": "^2.0.10"
   }
 }
