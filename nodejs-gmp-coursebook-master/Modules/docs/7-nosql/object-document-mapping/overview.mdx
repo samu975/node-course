@@ -1,0 +1,33 @@
+---
+sidebar_position: 1
+title: NoSQL. ODM
+sidebar_label: Overview
+pagination_label: Databases. NoSQL - ODM. Overview
+---
+
+# Object Document Mapper
+
+### Overview
+
+The Object Document Mapper (ODM) is an interface that treats a document as a tree structure.
+Similar to Object Relational Mapping (ORM), it is used to change the structure and content of a document.
+And also allows to define data schemas which represent the data structure.
+The usage of ODMs additionally simplifies the process of changing the database engine whenever the need arises.
+
+Multiple ODMs are designed to support different NoSQL databases:
+- [Express-Cassandra](https://www.npmjs.com/package/express-cassandra) is designed to work with Node.js for a NoSQL database like Cassandra
+- [Mongoose](https://www.npmjs.com/package/mongoose) is designed for MongoDB database
+- [Amazon DynamoDB DataMapper](https://www.npmjs.com/package/@aws/dynamodb-data-mapper)is a helper for DynamoDB
+
+### Pros and Cons
+:::tip Pros
+- More productive work with Document DBs
+- ODM can support predefined structure and collections validation
+- Using ODM, it is possible to make collection schema similar to the SQL DBs
+- Less time spending on code writing to work with DBs
+:::
+
+:::danger Cons
+- If schemas and models were defined using ODM, relationship between them only exists within our application
+- Need spend time to dive into used ODM library
+:::

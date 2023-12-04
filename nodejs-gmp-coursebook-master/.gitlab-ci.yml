@@ -1,0 +1,63 @@
+workflow:
+  rules:
+    - if: '$CI_COMMIT_BRANCH == "master"'
+      when: always
+    - when: never
+
+image: node:latest
+
+cache:
+  paths:
+    - node_modules/
+
+stages:
+  - build
+  - deploy
+  - invalidate_cf_cache
+
+variables:
+  DEPLOY_PROD: "${DEPLOY_PROD:-false}"
+
+before_script:
+  # Install AWS CLI
+  - apt-get update && apt-get install -y awscli
+  # Configure AWS CLI
+  - aws configure set aws_access_key_id $AWS_ACCESS_KEY_ID
+  - aws configure set aws_secret_access_key $AWS_SECRET_ACCESS_KEY
+  - aws configure set default.region $AWS_DEFAULT_REGION
+  # Define working directory
+  - cd Modules
+
+build:
+  stage: build
+  script:
+    # Login to CodeArtifact
+    - aws codeartifact login --tool npm --domain ebook --domain-owner $AWS_ACCOUNT_ID --repository ebook-management --region $AWS_DEFAULT_REGION
+    # Install dependencies & built
+    - npm ci
+    - npm run build
+  artifacts:
+    paths:
+      - Modules/build/*
+
+deploy_to_s3:
+  stage: deploy
+  rules:
+    - if: $DEPLOY_PROD == "true" && $CI_COMMIT_BRANCH == "master"
+  script:
+    - S3_DIR="$([[ $DEPLOY_PROD == 'true' ]] && echo "s3://$S3_BUCKET/$PROGRAM_PATH" || echo "s3://$S3_BUCKET")"
+    - echo "Deploying application to $S3_DIR..."
+    # Sync build folder to S3
+    - aws s3 sync build/ $S3_DIR
+
+invalidate_cf_cache:
+  stage: invalidate_cf_cache
+  rules:
+    - if: $DEPLOY_PROD == "true" && $CI_COMMIT_BRANCH == "master"
+  script:
+    # Invalidate CloudFront cache
+    - CF_PATH_TO_INVALIDATE="$([[ $DEPLOY_PROD == 'true' ]] && echo "/$PROGRAM_PATH/*" || echo "/*")"
+    - echo "Invalidating CloudFront cache (path $CF_PATH_TO_INVALIDATE)..."
+    - aws cloudfront create-invalidation --distribution-id $CF_DISTRIBUTION_ID --paths $CF_PATH_TO_INVALIDATE --output text --query "Invalidation.Id" > invalidation-id.txt
+    - aws cloudfront wait invalidation-completed --distribution-id $CF_DISTRIBUTION_ID --id "$(cat invalidation-id.txt)"
+    - echo "Application is successfully deployed 🚀"

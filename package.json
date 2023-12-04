@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "jest",
     "start": "nodemon index.js",
     "task1": "nodemon ./eventEmitter/task1.js",
     "task2": "nodemon ./eventEmitter/task2.js",
@@ -21,7 +21,10 @@
   },
   "homepage": "https://github.com/samu975/node-course#readme",
   "devDependencies": {
-    "nodemon": "^3.0.1"
+    "@types/jest": "^29.5.10",
+    "jest": "^29.7.0",
+    "nodemon": "^3.0.1",
+    "ts-jest": "^29.1.1"
   },
   "dependencies": {
     "csvtojson": "^2.0.10"

@@ -1,0 +1,107 @@
+---
+sidebar_position: 1
+title: NoSQL. Overview and Use Cases
+sidebar_label: Overview and Use Cases
+pagination_label: Databases. NoSQL - Overview and Use Cases
+---
+
+# <div style={{textAlign: "center"}}> ![Overview](../img/nosql.png) </div>
+
+:::info History
+The acronym `NoSQL` was first used in 1998 by Carlo Strozzi while naming his lightweight, open-source "relational" database that did not use SQL.
+The name came up again in 2009 when Eric Evans and Johan Oskarsson used it to describe non-relational databases.<br/>
+:::
+
+NoSQL means either `No SQL systems` or more commonly - `Not only SQL`, to focus on the fact some systems might support SQL-like query languages.
+Unlike SQL, NoSQL does not store data in a relational format.
+The data does not need to have a strict schema nor the usual SQL table structure.
+However, not applying a schema at the data entry point also means it is more difficult to query NoSQL databases, maintain data consistency, and establish relationships between data sets.
+Before going further, let's understand what is structured, unstructured and semi-structured data.
+
+### Structured data
+
+The structured data considered to be the data that:
+
+- Adheres to a data model
+- Has a clearly defined structure
+- Follows a consistent order
+- Can be easily accessed, searched, analyzed and utilized by a person or computer program
+
+:::info Sources
+- SQL Databases
+- Spreadsheets such as Excel
+- Network and Web server logs
+:::
+
+### Unstructured data
+
+The unstructured data considered to be the data that:
+
+- Doesn't follow a data model
+- Doesn't have a structure that can be easily identified,
+- Is not suitable for a standard relational database
+- Has no pre-defined data model and stored in its native format
+- Requires more work to process and understand.
+
+:::info Sources
+- Web pages
+- Images / Videos
+- Reports
+- Surveys
+:::
+
+### Semi-structured data
+
+The semi-structured data considered to be the data that:
+
+- Doesn't adhere to a data model but does have some structure
+- No fixed or rigid schema in it
+- Has some organizational properties
+- Can store them in the relational database
+
+:::info Sources
+- E-mails
+- XML and other markup languages
+- TCP/IP packets
+- Zipped files
+:::
+
+## When to use NoSQL
+
+The following reasons to choose NoSQL database:
+
+- Data storage that is both structured and semi-structured
+- Massive amounts of data
+- Requirements for an architecture that scales out
+- Modern application paradigms like microservices
+- When ACID support is not needed
+
+## Use Cases
+
+### Session Store
+
+NoSQL can be used as a global session store, which manages session information for user.
+
+### Content Management
+
+Content management can store information in any format including text, images, audio and video.
+NoSQL offers a better option for storing multimedia content with flexible and open-ended data model.
+
+### Big Data Processing
+
+Big data is too large to be handled through traditional processing systems.
+Real-time systems use stream processing to ingest new data while analyzing historical data.
+Extracting some useful information from a large amount of data is pretty complex thing.
+So, NoSQL databases are uniquely suited for such needs and allow to build today’s high-volume, high variety applications.
+Instead of applying schema on write, NoSQL databases apply schema on read.
+
+- ```What is Schema On Write?``` Schema on write is defined as creating a schema for data before writing into the database.
+- ```What is Schema On Read?``` Schema on read is defined as creating the schema only when reading the data from the database.
+
+### Internet of Things
+
+IoT devices are connected to the internet or communications networks and they able to collect and share data without humans.
+Billions of devices generating big amount of data, IoT NoSQL databases provide scalability and more flexible schema to IoT service providers.
+Data in the IoT is almost by definition not completely known in advance and designing structured schemas is almost impossible.
+The world is moving so fast that its applications must be flexible.
+That's why NoSQL is the only right DB to use here.
