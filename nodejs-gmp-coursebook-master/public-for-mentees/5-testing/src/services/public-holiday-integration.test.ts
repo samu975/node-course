@@ -1,4 +1,4 @@
-import { PublicHoliday, PublicHolidayShort } from '../types';
+import { PublicHolidayShort } from '../types';
 import {
   getListOfPublicHolidays,
   checkIfTodayIsPublicHoliday,
@@ -13,18 +13,6 @@ const PUBLIC_HOLIDAY_FR_SHORT: PublicHolidayShort = {
   name: 'Christmas Day',
   localName: 'Noël',
   date: '2023-12-25',
-};
-
-const PUBLIC_HOLIDAY_FR: PublicHoliday = {
-  date: '2023-12-25',
-  localName: 'Noël',
-  name: 'Christmas Day',
-  countryCode: 'FR',
-  fixed: true,
-  global: true,
-  counties: null,
-  launchYear: null,
-  types: ['Public'],
 };
 
 describe('Public Holidays service', () => {
