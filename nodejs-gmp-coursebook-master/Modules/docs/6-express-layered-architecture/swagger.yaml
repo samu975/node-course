@@ -1,0 +1,193 @@
+openapi: 3.0.3
+info:
+  title: Node.js GMP Express application
+  version: 1.0.0
+tags:
+  - name: cart
+  - name: product
+  - name: order
+  - name: user
+paths:
+  /api/profile/cart:
+    get:
+      tags:
+        - cart
+      summary: Getting user cart or creates of if there is no carts
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+    put:
+      tags:
+        - cart
+      summary: Updating user cart
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Cart'
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CartResponse'
+    delete:
+      tags:
+        - cart
+      summary: Deleting user cart
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/EmptySuccessResponse'
+  /api/profile/cart/checkout:
+    post:
+      tags:
+        - cart
+        - order
+      summary: Create an order
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/CheckoutResponse'
+  /api/products:
+    get:
+      tags:
+        - product
+      summary: returns a list of products
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Product'
+  /api/products/{productId}:
+    get:
+      tags:
+        - product
+      summary: returns product
+      parameters:
+        - name: productId
+          in: path
+          description: ID of product to return
+          required: true
+          schema:
+            type: number
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Product'
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        id:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+    CartItem:
+      type: object
+      properties:
+        product:
+          $ref: '#/components/schemas/Product'
+        count:
+          type: number
+    Product:
+      type: object
+      properties:
+        id:
+          type: string
+        title:
+          type: string
+        description:
+          type: string
+        price:
+          type: number
+    CartResponse:
+      type: object
+      properties:
+        statusCode:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            cart:
+              $ref: '#/components/schemas/Cart'
+            total:
+              type: number
+    Order:
+      type: object
+      properties:
+        id:
+          type: string
+        userId:
+          type: string
+        cartId:
+          type: string
+        items:
+          type: array
+          items:
+            $ref: '#/components/schemas/CartItem'
+        payment:
+          type: object
+          properties:
+            type:
+              type: string
+            address:
+              type: string
+            creditCard:
+              type: string
+        delivery:
+          type: object
+          properties:
+            type:
+              type: string
+            address:
+              type: string
+        comments:
+          type: string
+        status:
+          type: string
+        total:
+          type: number
+    CheckoutResponse:
+      type: object
+      properties:
+        statusCode:
+          type: number
+        message:
+          type: string
+        data:
+          type: object
+          properties:
+            order:
+              $ref: '#/components/schemas/Order'
+
+    EmptySuccessResponse:
+      type: object
+      properties:
+        statusCode:
+          type: number
+        message:
+          type: string
