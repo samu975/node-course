@@ -1,0 +1,137 @@
+---
+sidebar_position: 3
+title: Examples
+sidebar_label: Examples
+pagination_label: Databases. NoSQL - ODM. Examples
+---
+
+## [Mongoose](https://mongoosejs.com/docs/index.html)
+
+:::info
+Mongoose provides a straight-forward, schema-based solution to model your application data.
+It includes built-in type casting, validation, query building, business logic hooks and more, out of the box.
+:::
+
+### Requirements
+- Installed NodeJS
+- MongoDB on your machine or use the MongoDB cloud
+- Installed ```mongoose``` and ```@types/mongoose``` npm package to your project
+
+### Before start
+
+- Before use ODM, create your first database in MongoDB. Then, create your first collection (Example - ```User```).
+- Create file ```index.js``` in your project.
+
+## Step 1
+
+- Include ```mongoose``` in your project
+- Open a connection to the created database. [How to connect](https://mongoosejs.com/docs/connections.html)
+
+```ts
+    import { connect, Schema, model, disconnect } from 'mongoose';
+
+    await connect("YOUR_DB_CONNECTION_STRING");
+```
+
+## Step 2
+
+- Create database schema using ```mongoose```. [About schema](https://mongoosejs.com/docs/guide.html)
+- Create new model using this schema. [About model](https://mongoosejs.com/docs/models.html)
+
+```ts
+    interface IUser {
+      name: string;
+      email: string;
+      age?: number;
+    }
+
+    const userSchema = new Schema<IUser>({
+        name: { type: String, required: true },
+        email: { type: String, required: true },
+        age: { type: Number, required: false },
+    });
+
+  const User = model<IUser>("User", userSchema);
+```
+[Schemas types](https://mongoosejs.com/docs/schematypes.html) for ```mongoose```.
+When we created ```User``` model, it means that ```mongoose``` will automatically look for your created collection.
+Now, you are able to work with this collection.
+
+## Work with collection
+
+- [Model API])(https://mongoosejs.com/docs/api/model.html)
+
+```ts
+  // Create new model entity
+  // Save this entity into DB
+
+  const user = new User({
+    name: "Name",
+    email: "test@test.com",
+    age: 18
+  });
+
+  await user.save();
+
+  // To find one user or get an array of users
+  const user: IUser = await User.findOne({ email: 'test@test.com' });
+  const users: Array<IUser> = await User.find({ email: 'test@test.com' });
+
+  // Or it is possible to use .where()
+  const users: Array<IUser> = await User.where('email').eq('test@test.com');
+
+  // Or get all rows and then use .where()
+  const users: Array<IUser> = User.find().where({ email: 'test@test.com' });
+
+  // Also it is possible to chain queries
+  const users: Array<IUser> = User.find().where({ email: 'test@test.com' }).where({ age: 18 });
+```
+
+## Work with aggregations
+
+Aggregation is a way of processing a large number of documents in a collection by means of passing them through different stages.
+The stages make up what is known as a pipeline.
+The stages in a pipeline can filter, sort, group, reshape and modify documents that pass through the pipeline.
+MongoDB Aggregation can also perform relational-like joins, reshape documents, create new and update existing collections.
+
+- [Aggregation Docs](https://mongoosejs.com/docs/api/aggregate.html)
+
+Most popular aggregation stages:
+- $match – filters those documents we need to work with
+- $group – does the aggregation job
+- $sort – sorts the resulting documents
+
+```db.collectionName.aggregate(stages, options)```
+
+```ts
+{
+   _id: 1
+   username: 'UserName_1',
+   firstName: 'FirstName_1',
+   lastName: 'LastName_1',
+   age: 40
+},
+{
+   _id: 2
+   username: 'UserName_2',
+   firstName: 'FirstName_2',
+   lastName: 'LastName_1',
+   age: 20
+}
+```
+
+```ts
+const result = await User.aggregate([ {$group : { _id : "$lastName", total:  { $sum : 1 }} }]);
+
+// output: { "_id" : "LastName_1", total: 2 }
+```
+
+### Before end
+
+- Close database connection
+
+```ts
+    import { disconnect } from 'mongoose';
+
+    await disconnect();
+```
